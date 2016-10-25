@@ -1,4 +1,4 @@
 # robosoccer
 a kriti project on robots playing soccer
 
-"Testing - initial commit by anand374"
+----Based on hard-core Image Processing----
