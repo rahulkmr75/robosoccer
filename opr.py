@@ -45,9 +45,9 @@ def getTheta(p0,p1,p2):
     print theta1,theta2,theta3
     return theta3
 #gives you the centroid of a region after masking and other crap
-def getCentroid(img,low,up):
+def getCentroid(img,low_val,up_val):
 
-    hsv=cv2.cvtColor(bgr,cv2.COLOR_BGR2HSV)
+    hsv=cv2.cvtColor(img,cv2.COLOR_BGR2HSV)
 
     #masking everything else other than green
     mask=cv2.inRange(hsv,low_val,up_val)

@@ -6,6 +6,8 @@ from geometry_msgs.msg import Point
 from std_msgs.msg import Int16
 import rospy
 import const
+import botpos as bp
+import opr
 
 def pack(x):
 	if x<0:
@@ -29,11 +31,18 @@ def main():
 			cv2.waitKey(32)
 			continue
 		bckup=np.copy(img)
-
 		gray=cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
 		hsv=cv2.cvtColor(img,cv2.COLOR_BGR2HSV)
 
-		
+		#getting the co-ordinates
+		botpos1=opr.getCentroid(img,const.mybotcol1[0],const.mybotcol1[1])
+		botpos2=opr.getCentroid(img,const.mybotcol2[0],const.mybotcol2[1])
+
+		opbot1=opr.getCentroid(img,const.opbotcol1[0],const.opbotcol1[1])
+		opbot2=opr.getCentroid(img,const.opbotcol2[0],const.opbotcol2[1])
+
+		ball=opr.getCentroid(img,const.ball[0],const.ball[1])
+
 		cv2.imshow("backup",bckup)
 	cv2.destroyAllWindows()
 	cap.release()
