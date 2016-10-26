@@ -13,3 +13,6 @@ ball=[[0,0,0],[180,255,255]]
 klinear=0
 kangular=0
 
+start_dist=10
+opp_line_dist=10
+
