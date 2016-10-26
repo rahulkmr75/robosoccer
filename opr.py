@@ -364,3 +364,15 @@ def getSecondaryPath(obstacle,begin,end):
         #no secondary path possible
         return
 
+def check_Arena(ballpos,centre_diameter,my_goal_edge):
+    #assuming the centre diameter to be y=c
+    if(my_goal_edge==0):
+        if(ballpos[1]<centre_diameter):
+            return 0
+        else:
+            return 1
+    elif(my_goal_edge==1):
+        if(ballpos[1]>centre_diameter):
+            return 0
+        else:
+            return 1

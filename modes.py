@@ -28,8 +28,8 @@ def modes(mode,ballpos,circle_centre,opp_thresh_line,centre_diameter,my_goal_edg
 			mode_switch=1
 
 	#check for mode defence
-	#assuming line of form x=c
-	elif(opr.distance(ballpos,(opp_thresh_line,0))<const.opp_line_dist):
+	#assuming line of form y=c
+	elif(opr.distance(ballpos,(ballpos[0],opp_thresh_line))<const.opp_line_dist):
 		i=0
 		dirctn=0
 		while(i<4):
@@ -39,9 +39,14 @@ def modes(mode,ballpos,circle_centre,opp_thresh_line,centre_diameter,my_goal_edg
 			mode_switch=2
 
 	#check for mode attack
-	elif(opr.Check_Arena(ballpos,centre_diameter,my_goal_edge)==0):
-		while():
-			check_motion
+	elif(opr.check_Arena(ballpos,centre_diameter,my_goal_edge)==0):
+		if(opr.distance(ballPositions[19],ballPositions[16])<ball_motion_thresh):
+			#now it looks like the ball is stationary
+			i=0
+			while(i<4):
+				if(opr.distance(ballPositions[19-i],ballPositions[18-i])>ball_motion_thresh):
+					break
+				mode_switch=3
 
 
 	if(mode_switch==1):
