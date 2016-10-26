@@ -21,6 +21,7 @@ def pack(x):
 def main():
 	rospy.init_node("main")
 	pub1=rospy.Publisher("motor_vel1",Int16,queue_size=10)
+	pub2=rospy.Publisher("motor_vel2",Int16,queue_size=10)
 
 	cap=cv2.VideoCapture(1)
 
@@ -38,8 +39,8 @@ def main():
 		botpos1=opr.getCentroid(img,const.mybotcol1[0],const.mybotcol1[1])
 		botpos2=opr.getCentroid(img,const.mybotcol2[0],const.mybotcol2[1])
 
-		opbot1=opr.getCentroid(img,const.opbotcol1[0],const.opbotcol1[1])
-		opbot2=opr.getCentroid(img,const.opbotcol2[0],const.opbotcol2[1])
+		#opbot1=opr.getCentroid(img,const.opbotcol1[0],const.opbotcol1[1])
+		#opbot2=opr.getCentroid(img,const.opbotcol2[0],const.opbotcol2[1])
 
 		ball=opr.getCentroid(img,const.ball[0],const.ball[1])
 
