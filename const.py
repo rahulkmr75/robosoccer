@@ -8,6 +8,9 @@ mybotcol2=np.array([[0,0,0],[180,255,255]])
 opbotcol1=np.array([[0,0,0],[180,255,255]])
 opbotcol2=np.array([[0,0,0],[180,255,255]])
 
+myarena=np.array([[0,0,0],[180,255,255]])
+oparena=np.array([[0,0,0],[180,255,255]])
+
 ball=np.array([[0,0,0],[180,255,255]])
 
 #the pid constants
@@ -16,4 +19,5 @@ kangular=0
 
 start_dist=10
 opp_line_dist=10
+
 
