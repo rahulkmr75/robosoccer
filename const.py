@@ -21,5 +21,5 @@ kangular=0
 
 start_dist=10
 opp_line_dist=10
-
+ball_motion_thresh=10
 

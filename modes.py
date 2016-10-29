@@ -5,7 +5,7 @@ import opr
 import const
 
 #assumptions ----------------------------
-'''x=c is the thresh line, opponents arena is near x axis'''
+'''y=c is the thresh line, opponents arena is near x axis'''
 
 ballPositions = deque(maxlen=20)
 centre_time=time.time()
