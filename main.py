@@ -44,6 +44,8 @@ def main():
 
 		ball=opr.getCentroid(img,const.ball[0],const.ball[1])
 
+		
+
 		cv2.imshow("backup",bckup)
 	cv2.destroyAllWindows()
 	cap.release()

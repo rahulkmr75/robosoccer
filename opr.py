@@ -5,7 +5,67 @@ import time
 from geometry_msgs.msg import Point
 import math
 
+def getArena(hsv,low,up):
+    hsv2=np.copy(hsv)
+    mask=cv2.inRange(hsv2,low,up)
+    maskblur=cv2.GaussianBlur(mask,(5,5),0)
+    maskblur=cv2.GaussianBlur(mask,(5,5),0)
+    maskblur=cv2.GaussianBlur(mask,(5,5),0)
+    ret, maskblur = cv2.threshold(maskblur,-1,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
+    im2, contours, hierarchy = cv2.findContours(maskblur,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
+    #cv2.imshow("im2",im2)
+    cnt=contours[0]
+    (x,y),radius = cv2.minEnclosingCircle(cnt)
+    center = (int(x),int(y))
+    radius = int(radius)
 
+    rect = cv2.minAreaRect(cnt)
+    box = cv2.boxPoints(rect)
+    box = np.int0(box)
+    cv2.drawContours(hsv2,[box],0,(0,0,0),2)
+    #cv2.imshow("try",hsv2)
+    
+    line=[box[0],box[1]]
+    dis=pdistance(box[0],box[1],center)
+    for i in range(1,4):
+        temp=pdistance(box[i],box[(i+1)%4],center)
+        if(temp<dis):
+            dis=temp
+            line=[box[i],box[(i+1)%4]]
+    return center,radius,line
+def getCentralLine(hsv,low,up,center):
+    hsv2=np.copy(hsv)
+    mask=cv2.inRange(hsv2,low,up)
+    maskblur=cv2.GaussianBlur(mask,(5,5),0)
+    maskblur=cv2.GaussianBlur(mask,(5,5),0)
+    maskblur=cv2.GaussianBlur(mask,(5,5),0)
+    ret, maskblur = cv2.threshold(maskblur,-1,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
+    im2, contours, hierarchy = cv2.findContours(maskblur,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
+    #cv2.imshow("im2",im2)
+    cnt=contours[0]
+    rect = cv2.minAreaRect(cnt)
+    box = cv2.boxPoints(rect)
+    box = np.int0(box)
+    cv2.drawContours(hsv2,[box],0,(0,0,0),2)
+    cv2.imshow("try",hsv2)
+    line=[box[0],box[1]]
+    dis=pdistance(box[0],box[1],center)
+    for i in range(1,4):
+        temp=pdistance(box[i],box[(i+1)%4],center)
+        if(temp<dis):
+            dis=temp
+            line=[box[i],box[(i+1)%4]]
+        print box[i],box[(i+1)%4],temp,dis
+
+    print line
+def pdistance(lp1,lp2,p):
+    if(lp1[0]==lp2[0]):
+        return abs(lp1[0]-p[0])
+    else:
+        m=(lp2[1]-lp1[1])*1.0/(lp2[0]-lp1[0])
+        c=lp2[1]-m*lp2[0]
+        d=abs((p[1]-m*p[0]-c)/(1+m*m))
+        return d
 def distance(p1,p2):
     return(math.sqrt((p1[0]-p2[0])**2+(p1[1]-p2[1])**2))
     
