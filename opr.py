@@ -32,7 +32,16 @@ def getArena(hsv,low,up):
         if(temp<dis):
             dis=temp
             line=[box[i],box[(i+1)%4]]
+		#since most of the cv functions require tuple format
+        line=toTuple(line)
     return center,radius,line
+#converts a list of array to a list of tuples
+def toTuple(line):
+	for i in range(0,len(line)):
+		line[i]=(line[i][0],line[i][1])
+	return line
+
+		
 def getCentralLine(hsv,low,up,center):
     hsv2=np.copy(hsv)
     mask=cv2.inRange(hsv2,low,up)
