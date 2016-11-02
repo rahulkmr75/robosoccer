@@ -20,9 +20,13 @@ def getArena(hsv,low,up):
     maskblur=cv2.GaussianBlur(mask,(5,5),0)
     maskblur=cv2.GaussianBlur(mask,(5,5),0)
     ret, maskblur = cv2.threshold(maskblur,-1,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
+    cv2.imshow("im2",maskblur)
     im2, contours, hierarchy = cv2.findContours(maskblur,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
-    #cv2.imshow("im2",im2)
     cnt=contours[0]
+    for i in contours:
+	if (cv2.contourArea(cnt)<cv2.contourArea(i)):
+	    cnt=i
+
     (x,y),radius = cv2.minEnclosingCircle(cnt)
     center = (int(x),int(y))
     radius = int(radius)
@@ -31,11 +35,13 @@ def getArena(hsv,low,up):
     box = cv2.boxPoints(rect)
     box = np.int0(box)
     cv2.drawContours(hsv2,[box],0,(0,0,0),2)
-    #cv2.imshow("try",hsv2)
+    cv2.imshow("try",hsv2)
     line1=[box[0],box[1]]
     dis=pdistance(box[0],box[1],center)
+    print dis,line1
     for i in range(1,4):
         temp=pdistance(box[i],box[(i+1)%4],center)
+	print temp,box[i],box[(i+1)%4]
         if(temp<dis):
             dis=temp
             line1=[box[i],box[(i+1)%4]]
@@ -69,38 +75,13 @@ def toTuple(line):
 	return line
 
 		
-def getCentralLine(hsv,low,up,center):
-    hsv2=np.copy(hsv)
-    mask=cv2.inRange(hsv2,low,up)
-    maskblur=cv2.GaussianBlur(mask,(5,5),0)
-    maskblur=cv2.GaussianBlur(mask,(5,5),0)
-    maskblur=cv2.GaussianBlur(mask,(5,5),0)
-    ret, maskblur = cv2.threshold(maskblur,-1,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
-    im2, contours, hierarchy = cv2.findContours(maskblur,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
-    #cv2.imshow("im2",im2)
-    cnt=contours[0]
-    rect = cv2.minAreaRect(cnt)
-    box = cv2.boxPoints(rect)
-    box = np.int0(box)
-    cv2.drawContours(hsv2,[box],0,(0,0,0),2)
-    cv2.imshow("try",hsv2)
-    line=[box[0],box[1]]
-    dis=pdistance(box[0],box[1],center)
-    for i in range(1,4):
-        temp=pdistance(box[i],box[(i+1)%4],center)
-        if(temp<dis):
-            dis=temp
-            line=[box[i],box[(i+1)%4]]
-        print box[i],box[(i+1)%4],temp,dis
-
-    print line
 def pdistance(lp1,lp2,p):
     if(lp1[0]==lp2[0]):
-        return abs(lp1[0]-p[0])
+        return abs(lp1[1]-p[1])
     else:
         m=(lp2[1]-lp1[1])*1.0/(lp2[0]-lp1[0])
-        c=lp2[1]-m*lp2[0]
-        d=abs((p[1]-m*p[0]-c)/(1+m*m))
+        c=lp2[1]-(m*lp2[0])
+        d=abs((p[1]-m*p[0]-c)/math.sqrt(1+m*m))
         return d
 def distance(p1,p2):
     return(math.sqrt((p1[0]-p2[0])**2+(p1[1]-p2[1])**2))
@@ -138,7 +119,7 @@ def getTheta(p0,p1,p2):
 	theta3=theta3-2*math.pi
     elif theta3<(-1*math.pi):
 	theta3=theta3+2*math.pi
-    print theta1,theta2,theta3
+    #print theta1,theta2,theta3
     return theta3
     
 #gives you the centroid of a region after masking and other crap
@@ -170,9 +151,9 @@ def getCentroid(img,low_val,up_val):
         centroid_x = int(moments['m10']/m00)
         centroid_y = int(moments['m01']/m00)
     if centroid_x != None and centroid_y != None:
-        return Point(centroid_x, centroid_y,0)
+        return (centroid_x, centroid_y)
     else:
-        return Point(-1,-1,0)
+        return (-1,-1)
 
 def getImagLine(dm,centre,radius,myArena):
 	#assuming an angle of 90 degree subtended at centre by this imaginary line
