@@ -140,6 +140,29 @@ def getCentroid(img,low_val,up_val):
     else:
         return Point(-1,-1,0)
 
+def getImagLine(dm,centre,radius,myArena):
+	#assuming an angle of 90 degree subtended at centre by this imaginary line
+	width=distance(dm[0],dm[3])
+	length=distance(dm[0],dm[1])
+	if(width>length):
+		temp=length
+		length=width
+		width=temp
+	#print width,length
+	m=radius/1.414
+	n=width-m
+	#print (m,n)
+	points_temp=[[(n*dm[0][0]+m*dm[3][0])/(m+n),(n*dm[0][1]+m*dm[3][1])/(m+n)],[(n*dm[1][0]+m*dm[2][0])/(m+n),(n*dm[1][1]+m*dm[2][1])/(m+n)]]
+	#print points_temp
+	m=(length-radius*1.414)/2
+	n=radius*1.414+m
+	points=[[(n*points_temp[0][0]+m*points_temp[1][0])/(m+n),(n*points_temp[0][1]+m*points_temp[1][1])/(m+n)],[(m*points_temp[0][0]+n*points_temp[1][0])/(m+n),(m*points_temp[0][1]+n*points_temp[1][1])/(m+n)]]
+	if(myArena==1):
+		point_temp=points_temp[0]
+		points_temp[0]=points_temp[1]
+		points_temp[1]=point_temp
+	return points
+
 #given two points in the x-y plane it lists the points lying on the line between the
 #two points
 def listPathPoints1(start,end):
