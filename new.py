@@ -32,8 +32,8 @@ while (cap.isOpened()):
 
 	cv2.imshow("track",img)
 
-	ret, bgr=cap.read()
-	
+	#ret, bgr=cap.read()
+	bgr=cv2.imread("arena.png")
 	gray=cv2.cvtColor(bgr,cv2.COLOR_BGR2GRAY)
 	hsv=cv2.cvtColor(bgr,cv2.COLOR_BGR2HSV)
 

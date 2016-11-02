@@ -10,11 +10,13 @@ up=np.array([140,255,255])
 center,radius,line=opr.getArena(hsv,low,up)
 #print center
 
-print line[0]
+print line
 #opr.getCentralLine(hsv,low,up,center)
 opr.getArena(hsv,low,up)
 cv2.circle(img,center,radius,(0,0,255),2)
-cv2.line(img,line[0],line[1],(0,0,255),3)
+cv2.line(img,line[0][0],line[0][1],(0,0,255),3)
+
+cv2.line(img,line[1][0],line[1][1],(0,0,255),3)
 
 cv2.imshow("asdf",img)
 

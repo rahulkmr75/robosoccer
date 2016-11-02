@@ -29,6 +29,6 @@ def findMoment(bgr,low_val,up_val):
 	    centroid_x = int(moments['m10']/m00)
 	    centroid_y = int(moments['m01']/m00)
 	if centroid_x != None and centroid_y != None:
-		return Point(centroid_x, centroid_y,0)
+		return (centroid_x, centroid_y)
 	else:
-		return Point(-1,-1,0)
+		return (-1,-1)

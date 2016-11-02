@@ -5,6 +5,14 @@ import time
 from geometry_msgs.msg import Point
 import math
 
+def checkAlignment(bothead,bottail,line,center):
+    vecbot=[bothead[0]-bottail[0],bothead[1]-bottail[1]]
+    vecline=[line[1][0]-line[0][0],line[1][1]-line[0][1]]
+    botcenter=[(bothead[0]+bottail[0])/2,(bothead[1]+bothead[1])/2]
+    theta=getTheta(botcenter,bothead,line[0])
+    distance=pdistance(line[0],line[1],botcenter)
+    return thetha,distance
+
 def getArena(hsv,low,up):
     hsv2=np.copy(hsv)
     mask=cv2.inRange(hsv2,low,up)
@@ -24,17 +32,36 @@ def getArena(hsv,low,up):
     box = np.int0(box)
     cv2.drawContours(hsv2,[box],0,(0,0,0),2)
     #cv2.imshow("try",hsv2)
-    
-    line=[box[0],box[1]]
+    line1=[box[0],box[1]]
     dis=pdistance(box[0],box[1],center)
     for i in range(1,4):
         temp=pdistance(box[i],box[(i+1)%4],center)
         if(temp<dis):
             dis=temp
-            line=[box[i],box[(i+1)%4]]
+            line1=[box[i],box[(i+1)%4]]
 		#since most of the cv functions require tuple format
-        line=toTuple(line)
+    line1=toTuple(line1)
+
+    #getting the second line
+    m1=getSlope(line1[0],line1[1])    
+    line2=[box[0],box[1]]
+    for i in range(0,4):
+	line2=[box[i],box[(i+1)%4]]
+	m2=getSlope(line2[0],line2[1])
+	if(abs(m2[0])==abs(m1[0]) and abs(m2[1])==abs(m1[1])):
+	    if(distance(line2[0],line1[0])>0 and distance(line2[1],line1[0])>0):
+		break
+    line2=toTuple(line2)
+    line=[line1,line2]
     return center,radius,line
+
+#get slope returns the cosine and sine value of a line
+def getSlope(p1,p2):
+    dist=distance(p1,p2)
+    costheta=(p2[0]-p1[0])/dist
+    sintheta=(p2[1]-p1[1])/dist
+    return [costheta,sintheta]
+
 #converts a list of array to a list of tuples
 def toTuple(line):
 	for i in range(0,len(line)):
@@ -106,13 +133,14 @@ def getTheta(p0,p1,p2):
         theta2=0
     #print vec,theta2
     theta3=theta2-theta1
-    print theta3
+
     if theta3>math.pi:
 	theta3=theta3-2*math.pi
     elif theta3<(-1*math.pi):
 	theta3=theta3+2*math.pi
     print theta1,theta2,theta3
     return theta3
+    
 #gives you the centroid of a region after masking and other crap
 def getCentroid(img,low_val,up_val):
 
