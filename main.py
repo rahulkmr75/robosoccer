@@ -6,7 +6,6 @@ from geometry_msgs.msg import Point
 from std_msgs.msg import Int16
 import rospy
 import const
-import botpos as bp
 import opr
 
 def pack(x):

@@ -2,7 +2,6 @@ import cv2
 import pid
 import opr
 import numpy as np
-import botpos as bp
 import const
 
 #cap=cv2.VideoCapture(1)
