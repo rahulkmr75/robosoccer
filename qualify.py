@@ -8,6 +8,9 @@ import const
 #cap=cv2.VideoCapture(1)
 bot=[[-1,-1],[-1,-1]]
 u=0
+center=(-1,-1)
+radius=-1
+line=[]
 while not rospy.is_shutdown():
     global u
     #get bot position bot[0]-head bot[1]-tail
@@ -19,6 +22,7 @@ while not rospy.is_shutdown():
     bot[1]=bp.findMoment(hsv,const.bottail[0],const.bottail[1])
     
     #getting arena in every 50 frame
+    global center,radius,line
     if(u==0):
 	center,radius,line=opr.getArena(hsv,const.myarena[0],const.myarena[1])
     u=u+1
@@ -26,10 +30,14 @@ while not rospy.is_shutdown():
     
     #get opponents goal centroid as opgoal
 
-    
-
     #get ball position
     ball=bp.findMoment(hsv,const.ball[0],const.ball[1])
+    dst=ball
+    
+    #get
+    #find whether to go after the ball or the imaginary point
+    pdis1=opr.pdistance(line[0][0],line[0][1],lin[1][0])
+    pdis2=opr.pdistance(line[0][0],line[0][1],ball)
 
     #get angular error and linear error
     angerr=opr.getTheta(bot[1],bot[0],ball)
@@ -39,7 +47,7 @@ while not rospy.is_shutdown():
     motorvel=pid.getVelocity(angerr,linerr)
     
     if(linerr<=qual_dist):
-	motorvel=(peakvelocity,peakvelocity)
+	motorvel=(const.maxvelocity,const.maxvelocity)
 
     k=cv2.waitKey(20) & 0xFF
     if k==27:

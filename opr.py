@@ -155,9 +155,15 @@ def getCentroid(img,low_val,up_val):
     bot=cv2.GaussianBlur(mask,(5,5),0)
     # ret, gline = cv2.threshold(gline,100,255,cv2.THRESH_BINARY)
     ret, bot = cv2.threshold(bot,-1,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
+    #eroded image
+    kernel=np.ones((5,5),np.uint8)
+    eroded=cv2.erode(mask,kernel,iterations=1)
+    #dilated image
+    kernel1=np.ones((3,3),np.uint8)
+    dilated=cv2.dilate(mask,kernel1,iterations=1)
+    
+    moments = cv2.moments(eroded)
 
-    # Take the moments to get the centroid
-    moments = cv2.moments(bot)
     m00 = moments['m00']
     centroid_x, centroid_y = None, None
     if m00 != 0:

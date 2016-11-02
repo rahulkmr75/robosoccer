@@ -19,13 +19,15 @@ bottail=np.array([[0,0,0],[180,255,255]])
 opbotcol1=np.array([[0,0,0],[180,255,255]])
 opbotcol2=np.array([[0,0,0],[180,255,255]])
 
+#arena colours
 myarena=np.array([[0,0,0],[180,255,255]])
 oparena=np.array([[0,0,0],[180,255,255]])
 
 ball=np.array([[0,0,0],[180,255,255]])
 
-myarena=np.array([100,220,220],[140,255,255])
-
+#min and max velocity of the ball
+minvelocity=80
+maxvelocity=200
 #the pid constants
 klinear=0
 kangular=0
